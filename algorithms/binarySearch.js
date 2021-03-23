@@ -1,28 +1,35 @@
-const { fileToSortedArray, measureExecutionTime } = require("../utils/commons")
+const { 
+    fileToSortedArray, 
+    measureExecutionTime, 
+    log 
+} = require("../utils/commons")
 const path = require("path")
 
 const dataFile = path.join(__dirname, "../datasets/names.txt")
 const data = fileToSortedArray(dataFile)
-const nameToSearch = 'Lisa1'
+const nameToSearch = 'Lisa'
 
 const searchWithIndexOf = (data, name) => {
     return data.indexOf(name)
 }
 
-const serchWithIteration = (data, name) => {
+const serchWithIteration = (data, name, counter) => {
     for (i = 0; i < data.length; i++) {
+        counter.iterations++
         if (data[i] === name) return i
     }
     return -1
 }
 
-const searchBinary = (data, name) => {
+const searchBinary = (data, name, counter) => {
     let firstIndex = 0
     let lastIndex = data.length - 1 
 
     while (true) {
+        counter.iterations++
+
         if (lastIndex === firstIndex) {
-            return data[firstIndex] === name ? 0 : -1
+            return data[firstIndex] === name ? firstIndex : -1
         }
 
         let index = Math.floor((lastIndex + firstIndex) / 2)
@@ -42,15 +49,10 @@ const searchBinary = (data, name) => {
 }
 
 const res1 = measureExecutionTime(() => searchWithIndexOf(data, nameToSearch))
-console.log("index:", res1)
-console.log("name:", data[res1])
+log("index:", res1, "\nname:", data[res1], "\n")
 
-const res2 = measureExecutionTime(() => serchWithIteration(data, nameToSearch))
-console.log("index:", res2)
-console.log("name:", data[res2])
+const res2 = measureExecutionTime((counter) => serchWithIteration(data, nameToSearch, counter))
+log("index:", res2, "\nname:", data[res2], "\n")
 
-const res3 = measureExecutionTime(() => searchBinary(data, nameToSearch))
-console.log("index:", res3)
-console.log("name:", data[res3])
-
-
+const res3 = measureExecutionTime((counter) => searchBinary(data, nameToSearch, counter))
+log("index:", res3, "\nname:", data[res3], "\n")

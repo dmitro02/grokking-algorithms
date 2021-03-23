@@ -1,19 +1,25 @@
-const fs = require("fs");
-const readLine = require("readline");
+const fs = require("fs")
+const readLine = require("readline")
+
+const log = (...args) => {
+  console.log(...args)
+}
 
 const measureExecutionTime = (fun) => {
+    const counter = { iterations: 0 } 
     const start = process.hrtime()
-    const result = fun()
+    const result = fun(counter)
     const end = process.hrtime(start)
-    console.info('Execution time: %ds %dms', end[0], end[1] / 1000000)
+    log(`Execution time: ${end[0]} ${end[1]/1000000}\nIterations: ${counter.iterations}`)
     return result
 }
 
 const measureExecutionTimeAsync = async (fun) => {
+    const counter = { iterations: 0 }
     const start = process.hrtime()
-    const result = await fun()
+    const result = await fun(counter)
     const end = process.hrtime(start)
-    console.info('Execution time: %ds %dms', end[0], end[1] / 1000000)
+    log(`Execution time: ${end[0]} ${end[1]/1000000}\nIterations: ${counter.iterations}`)
     return result
 }
 
@@ -55,7 +61,8 @@ const fileToSortedArray = (file) => {
             .sort()
 }
 
-module.exports = { 
+module.exports = {
+    log, 
     readFile,
     readLinesAsync,
     measureExecutionTime,
