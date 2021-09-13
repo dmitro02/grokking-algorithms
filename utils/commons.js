@@ -5,12 +5,13 @@ const log = (...args) => {
   console.log(...args)
 }
 
-const measureExecutionTime = (fun) => {
+const measureExecutionTime = (fun, funArgs) => {
+    const fun1 = () => { return 6 }
     const counter = { iterations: 0 } 
     const start = process.hrtime()
-    const result = fun(counter)
+    const result = fun.call(this, ...funArgs, counter)
     const end = process.hrtime(start)
-    log(`Execution time: ${end[0]} ${end[1]/1000000}\nIterations: ${counter.iterations}`)
+    log(`Function: ${fun.name}\nExecution time: ${end[0]} ${end[1]/1000000}\nIterations: ${counter.iterations}`)
     return result
 }
 

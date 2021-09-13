@@ -48,11 +48,11 @@ const searchBinary = (data, name, counter) => {
     }
 }
 
-const res1 = measureExecutionTime(() => searchWithIndexOf(data, nameToSearch))
+const res1 = measureExecutionTime(searchWithIndexOf, [data, nameToSearch])
 log("index:", res1, "\nname:", data[res1], "\n")
 
-const res2 = measureExecutionTime((counter) => serchWithIteration(data, nameToSearch, counter))
+const res2 = measureExecutionTime(serchWithIteration, [data, nameToSearch])
 log("index:", res2, "\nname:", data[res2], "\n")
 
-const res3 = measureExecutionTime((counter) => searchBinary(data, nameToSearch, counter))
+const res3 = measureExecutionTime(searchBinary, [data, nameToSearch])
 log("index:", res3, "\nname:", data[res3], "\n")
